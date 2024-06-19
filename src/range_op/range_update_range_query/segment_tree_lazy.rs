@@ -82,7 +82,7 @@ impl SegmentTree {
         self.build(r0);
     }
 
-    fn build(&mut self, mut i: usize) {
+    fn pull(&mut self, mut i: usize) {
         while i > 1 {
             i /= 2;
             self.t[i] = self.t[2 * i].min(self.t[2 * i + 1]) + self.d[i];
