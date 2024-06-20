@@ -29,7 +29,7 @@ impl FenwickTree {
     }
 
     fn increment(&mut self, mut i: usize, dt: i64) {
-        while i < self.t.len() as _ {
+        while i < self.t.len() {
             self.t[i] += dt;
 
             i += lsb(i);
