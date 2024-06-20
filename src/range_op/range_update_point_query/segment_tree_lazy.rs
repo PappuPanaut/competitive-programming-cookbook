@@ -64,8 +64,8 @@ impl SegmentTree {
             (l, r) = (l / 2, r / 2);
         }
 
-        self.build(l0);
-        self.build(r0);
+        self.pull(l0);
+        self.pull(r0);
     }
 
     fn pull(&mut self, mut i: usize) {
