@@ -1,7 +1,6 @@
 struct SegmentTree {
     t: Vec<u32>,
     d: Vec<u32>,
-    n: usize,
     h: usize,
 }
 
@@ -10,13 +9,12 @@ impl SegmentTree {
         Self {
             t: vec![0; 2 * n],
             d: vec![u32::MAX; n],
-            n,
             h: n.ilog2() as _,
         }
     }
 
     fn get(&mut self, mut i: usize) -> u32 {
-        i += self.n;
+        i += self.d.len();
         self.push(i);
 
         self.t[i]
@@ -39,13 +37,13 @@ impl SegmentTree {
     fn apply(&mut self, i: usize, v: u32) {
         self.t[i] = v;
 
-        if i < self.n {
+        if i < self.d.len() {
             self.d[i] = v;
         }
     }
 
     fn assign(&mut self, l0: usize, r0: usize, v: u32) {
-        let (l0, r0) = (l0 + self.n, r0 + self.n);
+        let (l0, r0) = (l0 + self.d.len(), r0 + self.d.len());
         self.push(l0);
         self.push(r0);
 
