@@ -1,7 +1,6 @@
 struct SegmentTree {
     t: Vec<u32>,
     d: Vec<u32>,
-    h: usize,
 }
 
 impl SegmentTree {
@@ -9,7 +8,6 @@ impl SegmentTree {
         Self {
             t: vec![0; 2 * n],
             d: vec![u32::MAX; n],
-            h: n.ilog2() as _,
         }
     }
 
@@ -21,7 +19,7 @@ impl SegmentTree {
     }
 
     fn push(&mut self, i: usize) {
-        for s in (1..=self.h).rev() {
+        for s in (1..=self.d.len().ilog2()).rev() {
             let i = i >> s;
 
             if self.d[i] == u32::MAX {
