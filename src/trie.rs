@@ -1,7 +1,6 @@
 #[derive(Default, Clone)]
 struct Node {
-    next: [usize; 26],
-    end_count: u32,
+    next: [u32; 2],
 }
 
 struct Trie {
@@ -15,40 +14,35 @@ impl Trie {
         }
     }
 
-    fn insert_str(&mut self, s: &str) {
+    fn insert(&mut self, x: u64) {
         let mut v = 0;
 
-        for c in s.chars().map(|c| (c as usize) - ('a' as usize)) {
-            if self.t[v].next[c] == 0 {
-                self.t[v].next[c] = self.t.len();
+        for xb in (0..41).rev().map(|b| (x >> b) as usize & 1) {
+            if self.t[v].next[xb] == 0 {
+                self.t[v].next[xb] = self.t.len() as _;
                 self.t.push(Node::default());
             }
 
-            v = self.t[v].next[c];
+            v = self.t[v].next[xb] as _;
         }
-
-        self.t[v].end_count += 1;
     }
 
-    fn lcp(&self, s: &str) -> u32 {
-        let mut lcp = 0;
+    fn max_xor_with(&self, x: u64) -> u64 {
+        let mut res = 0;
 
-        let (mut v, mut depth) = (0, 0);
-        for c in s.chars().map(|c| (c as usize) - ('a' as usize)) {
-            if self.t[v].end_count > 0
-                || self.t[v].next.iter().map(|u| u.min(&1)).sum::<usize>() > 1
-            {
-                lcp = lcp.max(depth);
+        let mut v = 0;
+        for xb in (0..41).rev().map(|b| (x >> b) as usize & 1) {
+            res *= 2;
+
+            match self.t[v].next[1 ^ xb] > 0 {
+                true => {
+                    res += 1;
+                    v = self.t[v].next[1 ^ xb] as _;
+                }
+                false => v = self.t[v].next[xb] as _,
             }
-
-            v = self.t[v].next[c];
-            depth += 1;
         }
 
-        if self.t[v].end_count > 1 || self.t[v].next.iter().map(|u| u.min(&1)).sum::<usize>() > 0 {
-            lcp = lcp.max(depth);
-        }
-
-        lcp
+        res
     }
 }
