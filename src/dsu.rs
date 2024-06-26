@@ -8,7 +8,7 @@ struct Dsu {
 impl Dsu {
     fn with_len(n: usize) -> Self {
         Self {
-            pa: (0..n).map(|i| i as u32).collect(),
+            pa: (0..n as _).collect(),
             sz: vec![1; n],
             num_cc: n as _,
             cc_mx_sz: 1,
