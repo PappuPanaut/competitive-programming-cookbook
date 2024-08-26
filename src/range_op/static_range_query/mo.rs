@@ -17,6 +17,7 @@ impl Ord for Query {
     }
 }
 
+/// Uses 1-based indexing
 struct Mo {
     queries: Vec<Query>,
     arr: Vec<u32>,
