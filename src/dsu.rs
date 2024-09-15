@@ -1,26 +1,25 @@
+#[derive(Default)]
 struct Dsu {
-    pa: Vec<u32>,
+    pa: std::collections::HashMap<u32, u32>,
 }
 
 impl Dsu {
-    fn with_len(n: usize) -> Self {
-        Self {
-            pa: (0..n as _).collect(),
-        }
-    }
-
-    fn rep(&mut self, u: usize) -> usize {
-        if u == self.pa[u] as _ {
-            return u as _;
+    fn rep(&mut self, u: u32) -> u32 {
+        if !self.pa.contains_key(&u) {
+            return u;
         }
 
-        self.pa[u] = self.rep(self.pa[u] as _) as _;
+        let ru = self.rep(self.pa[&u]);
+        self.pa.insert(u, ru);
 
-        self.pa[u] as _
+        ru
     }
 
-    fn merge(&mut self, u: usize, v: usize) {
+    fn merge(&mut self, u: u32, v: u32) {
         let (ru, rv) = (self.rep(u), self.rep(v));
-        self.pa[ru] = rv as _;
+
+        if ru != rv {
+            self.pa.insert(ru, rv);
+        }
     }
 }
