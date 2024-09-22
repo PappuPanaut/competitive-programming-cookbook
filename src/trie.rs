@@ -23,7 +23,6 @@ impl Trie {
         let mut v = 0;
         for xb in (0..41).rev().map(|b| (x >> b) & 1) {
             res *= 2;
-
             if self.t[v][1 ^ xb] == 0 {
                 v = self.t[v][xb]
             } else {
