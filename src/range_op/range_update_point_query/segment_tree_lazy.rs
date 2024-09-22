@@ -52,9 +52,7 @@ impl SegTree {
 
     fn _apply(&mut self, i: usize, v: u32) {
         self.t[i] = v;
-        if i < self.d.len() {
-            self.d[i] = v;
-        }
+        self.d[i] = if i < self.d.len() { v } else { self.d[i] }
     }
 
     fn _pull(&mut self, mut i: usize) {
