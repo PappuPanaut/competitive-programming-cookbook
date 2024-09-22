@@ -6,9 +6,7 @@ struct Query {
 }
 
 impl PartialOrd for Query {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other))
-    }
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> { Some(self.cmp(other)) }
 }
 
 impl Ord for Query {
@@ -27,13 +25,11 @@ struct Mo {
 
 impl Mo {
     fn new(arr: &[u64], queries: &[Query]) -> Self {
-        Self {
-            queries: queries.to_vec(),
-            arr: arr.to_vec(),
-            ans: vec![0; queries.len()],
-            pow: 0,
-            freq: vec![0; 1_000_001],
-        }
+        Self { queries: queries.to_vec(),
+               arr: arr.to_vec(),
+               ans: vec![0; queries.len()],
+               pow: 0,
+               freq: vec![0; 1_000_001] }
     }
 
     fn add(&mut self, ai: u64) {
@@ -48,7 +44,6 @@ impl Mo {
 
     fn solve(&mut self) {
         self.queries.sort();
-
         let (mut l, mut r) = (self.queries[0].l, self.queries[0].l);
         self.add(self.arr[l]);
         for query in self.queries.clone() {
