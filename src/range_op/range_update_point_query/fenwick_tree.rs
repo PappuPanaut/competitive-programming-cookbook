@@ -4,21 +4,11 @@ struct FenwickTree {
 }
 
 impl FenwickTree {
-    fn with_len(n: usize) -> Self {
-        Self { t: vec![0; n + 1] }
-    }
+    fn new(n: usize) -> Self { Self { t: vec![0; n + 1] } }
 
-    fn increment(&mut self, i: usize, dt: i64) {
-        self.increment_range(i..=i, dt);
-    }
-
-    fn set(&mut self, i: usize, x: i64) {
-        self.increment(i, x - self.get(i));
-    }
-
-    fn increment_range(&mut self, range: std::ops::RangeInclusive<usize>, dt: i64) {
-        self._increment(*range.start(), dt);
-        self._increment(1 + *range.end(), -dt);
+    fn add_rng(&mut self, rng: std::ops::RangeInclusive<usize>, dt: i64) {
+        self._add(*rng.start(), dt);
+        self._add(1 + *rng.end(), -dt);
     }
 
     fn get(&self, mut i: usize) -> i64 {
@@ -26,24 +16,16 @@ impl FenwickTree {
 
         while i > 0 {
             res += self.t[i];
-
-            i -= lsb(i);
+            i -= (i as isize & -(i as isize)) as usize;
         }
 
         res
     }
 
-    fn _increment(&mut self, mut i: usize, dt: i64) {
+    fn _add(&mut self, mut i: usize, dt: i64) {
         while i < self.t.len() {
             self.t[i] += dt;
-
-            i += lsb(i);
+            i += (i as isize & -(i as isize)) as usize;
         }
     }
-}
-
-fn lsb(i: usize) -> usize {
-    let i = i as isize;
-
-    (i & -i) as _
 }
