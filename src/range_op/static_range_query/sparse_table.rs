@@ -3,7 +3,7 @@ struct SparseTable {
 }
 
 impl SparseTable {
-    fn with_slice(s: &[u32]) -> Self {
+    fn new(s: &[u32]) -> Self {
         let mut t = vec![vec![0; s.len()]; 1 + s.len().ilog2() as usize];
         t[0] = s.to_vec();
 
@@ -16,7 +16,7 @@ impl SparseTable {
         Self { t }
     }
 
-    fn min_range(&self, l: usize, r: usize) -> u32 {
+    fn min_rng(&self, l: usize, r: usize) -> u32 {
         let b = (r - l + 1).ilog2() as usize;
 
         self.t[b][l].min(self.t[b][r + 1 - (1 << b)])
